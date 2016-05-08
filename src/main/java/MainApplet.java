@@ -32,12 +32,23 @@ public class MainApplet extends PApplet{
 
 	public void draw() {
 		background(255);		
-		for(Character character :characters) {
-			
+		for(Character character :characters) {			
 			character.display(); // let the character handle its own display	
+			character.showName(mouseX, mouseY);			
 		}
 
 	}
+	
+	public void mouseDragged() {
+		
+		for(Character character :characters){
+			character.drag(pmouseX, pmouseY);
+		}
+		
+		
+		
+	}
+	
 
 	private void loadData(){
 		data = loadJSONObject(path+file);		

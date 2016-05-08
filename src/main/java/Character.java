@@ -26,8 +26,26 @@ public class Character {
 	public void display(){
 		
 		this.parent.fill(colour);
-		this.parent.noStroke(); 
+		this.parent.noStroke(); 		
 		this.parent.ellipse(x, y, 30, 30);
+	}
+
+	public void showName(int mouseX, int mouseY) {
+		
+		if(this.parent.dist(x,y,mouseX,mouseY)<15) {
+			this.parent.fill(0);		
+			this.parent.textSize(10);
+			this.parent.text(name, x, y); 
+		}
+		
+	}
+
+	public void drag(int mouseX, int mouseY) {
+		if(this.parent.dist(x,y,mouseX,mouseY)<15) {
+			this.x = mouseX;
+			this.y = mouseY;
+		}
+		
 	}
 	
 }
