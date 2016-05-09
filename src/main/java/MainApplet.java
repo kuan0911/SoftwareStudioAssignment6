@@ -18,6 +18,7 @@ public class MainApplet extends PApplet{
 	JSONObject data;
 	JSONArray nodes, links;
 	private ArrayList<Character> characters;
+	private Network network;
 	
 	private final static int width = 1200, height = 650;
 	
@@ -25,18 +26,24 @@ public class MainApplet extends PApplet{
 
 		size(width, height);
 		characters = new ArrayList<Character>();
+		network = new Network(this);
 		smooth();
 		loadData();
 		
 	}
 
 	public void draw() {
-		background(255);		
+		
+		background(255);
+		textSize(36);
+		fill(100, 100, 120);
+		text("Star Wars", 550, 70);
+		network.display();
 		for(Character character :characters) {			
 			character.display(); // let the character handle its own display	
 			character.showName(mouseX, mouseY);			
 		}
-
+		
 	}
 	
 	public void mouseDragged() {
@@ -45,8 +52,12 @@ public class MainApplet extends PApplet{
 			character.drag(pmouseX, pmouseY);
 		}
 		
-		
-		
+	}
+	
+	public void mouseReleased() {
+		for(Character character :characters) {
+			character.backToAnchor();
+		}
 	}
 	
 

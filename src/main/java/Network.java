@@ -17,9 +17,13 @@ public class Network {
 		this.parent = parent;
 		
 	}
-
+	
 	public void display(){
 		
+		this.parent.fill(200);
+		this.parent.ellipse(635, 380, 500, 500);
+		this.parent.fill(255);
+		this.parent.ellipse(635, 380, 450, 470);
 	}
 	
 }
