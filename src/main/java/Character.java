@@ -35,14 +35,14 @@ public class Character {
 
 	public void showName(int mouseX, int mouseY) {
 		
-		if(MainApplet.dist(this.CurrentX, this.CurrentY, mouseX, mouseY)<15) {
+		if(MainApplet.dist(this.CurrentX, this.CurrentY, mouseX, mouseY)<25) {
 			this.parent.fill(0);		
 			this.parent.textSize(10);
 			this.parent.text(name, this.CurrentX, this.CurrentY); 
 		}
 		
 	}
-
+	
 	public void drag(int mouseX, int mouseY) {
 		if(MainApplet.dist( CurrentX, CurrentY, mouseX, mouseY) < 25) {
 			this.CurrentX = mouseX;
@@ -51,12 +51,28 @@ public class Character {
 		
 	}
 	
-	public void setX(int x){
+	public float getX(){
+		return this.CurrentX;
+	}
+	
+	public float getY(){
+		return this.CurrentY;
+	}
+	
+	public void setX(float x){
 		this.CurrentX = x;
 	}
 	
-	public void setY(int y) {
+	public void setY(float y) {
 		this.CurrentY = y;
+	}
+	
+	public void checkInside(boolean judge){
+		this.isInside = judge;
+	}
+	
+	public boolean getInside(){
+		return isInside;
 	}
 	
 	public void backToAnchor() {

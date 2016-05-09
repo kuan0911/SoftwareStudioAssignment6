@@ -19,11 +19,13 @@ public class MainApplet extends PApplet{
 	JSONArray nodes, links;
 	private ArrayList<Character> characters;
 	private Network network;
+	private int insideNum;
 	
 	private final static int width = 1200, height = 650;
 	
 	public void setup() {
 
+		insideNum=0;
 		size(width, height);
 		characters = new ArrayList<Character>();
 		network = new Network(this);
@@ -49,14 +51,30 @@ public class MainApplet extends PApplet{
 	public void mouseDragged() {
 		
 		for(Character character :characters){
-			character.drag(pmouseX, pmouseY);
+			if(!character.getInside()) character.drag(pmouseX, pmouseY);
 		}
 		
 	}
 	
 	public void mouseReleased() {
 		for(Character character :characters) {
-			character.backToAnchor();
+			if(character.getInside()==false) {
+				if(network.insideJudge(character.getX(), character.getY())) {
+					character.checkInside(true);
+					insideNum++;
+				}
+				else character.backToAnchor();
+			}
+		}
+		double arc = 360/insideNum;
+		int count=0;
+		for(Character character :characters) {
+			if(character.getInside()){
+				character.setX(network.getRX()+network.getR()*(float)Math.cos(Math.PI*arc*count/180));
+				character.setY(network.getRY()+network.getR()*(float)Math.sin(Math.PI*arc*count/180));
+				count++;
+				if(count==insideNum) break;
+			}
 		}
 	}
 	
