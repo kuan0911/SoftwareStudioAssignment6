@@ -117,7 +117,8 @@ public class MainApplet extends PApplet{
 		for (int i = 0; i < links.size(); i++) {
 			int target = links.getJSONObject(i).getInt("source");
 			int source = links.getJSONObject(i).getInt("target");
-			characters.get(target).addTarget(characters.get(source));
+			int value = links.getJSONObject(i).getInt("value");
+			characters.get(target).addTarget(characters.get(source),value);
 			//characters.get(links.getJSONObject(i).getInt("source")).addTarget(characters.get(links.getJSONObject(i).getInt("target")));
 			//System.out.println(links.getJSONObject(i).getInt("source")+" "+links.getJSONObject(i).getInt("target"));
 		}

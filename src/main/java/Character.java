@@ -16,6 +16,7 @@ public class Character {
 	private int colour;
 	private boolean isInside;
 	private ArrayList<Character> characters;
+	private ArrayList<Integer> linksValue;
 	private Network network;
 
 	public Character(MainApplet parent, String name, float x, float y, int colour){
@@ -29,6 +30,7 @@ public class Character {
 		this.colour = colour;
 		this.isInside = false;
 		this.characters = new ArrayList<Character>();
+		this.linksValue = new ArrayList<Integer>();
 		this.network = new Network(this.parent);
 	}
 
@@ -39,6 +41,7 @@ public class Character {
 				if(ch.getInside()) {
 					this.parent.noFill();
 					this.parent.stroke(0); 
+					this.parent.strokeWeight(this.linksValue.get(characters.indexOf(ch))); 
 					this.parent.bezier( this.CurrentX, this.CurrentY,(this.CurrentX+this.network.getRX())/2, (this.CurrentY+this.network.getRY())/2, 
 						(ch.CurrentX+this.network.getRX())/2, (ch.CurrentY+this.network.getRY())/2 ,ch.CurrentX, ch.CurrentY);
 				}
@@ -54,7 +57,7 @@ public class Character {
 		
 		if(MainApplet.dist(this.CurrentX, this.CurrentY, mouseX, mouseY)<25) {
 			this.parent.fill(0);		
-			this.parent.textSize(10);
+			this.parent.textSize(15);			
 			this.parent.text(name, this.CurrentX, this.CurrentY); 
 			return true;
 		}
@@ -67,8 +70,9 @@ public class Character {
 			return true;		
 	}
 	
-	public void addTarget(Character ch){
+	public void addTarget(Character ch, int value){
 		this.characters.add(ch);
+		this.linksValue.add(value);
 	}
 	
 	public float getX(){
