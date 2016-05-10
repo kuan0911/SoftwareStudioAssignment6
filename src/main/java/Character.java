@@ -41,7 +41,7 @@ public class Character {
 				if(ch.getInside()) {
 					this.parent.noFill();
 					this.parent.stroke(0); 
-					this.parent.strokeWeight(this.linksValue.get(characters.indexOf(ch))); 
+					this.parent.strokeWeight(this.linksValue.get(characters.indexOf(ch))/4); 
 					this.parent.bezier( this.CurrentX, this.CurrentY,(this.CurrentX+this.network.getRX())/2, (this.CurrentY+this.network.getRY())/2, 
 						(ch.CurrentX+this.network.getRX())/2, (ch.CurrentY+this.network.getRY())/2 ,ch.CurrentX, ch.CurrentY);
 				}				
