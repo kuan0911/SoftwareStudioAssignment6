@@ -24,6 +24,7 @@ public class MainApplet extends PApplet{
 	private Character draggedCh;
 	private boolean isDragged;
 	private ControlP5 cp5;
+	private int episodeNum=1;
 	
 	private final static int width = 1200, height = 650;
 	
@@ -33,15 +34,7 @@ public class MainApplet extends PApplet{
 		isDragged=false;
 		size(width, height);
 		cp5 = new ControlP5(this);
-		cp5. addButton("buttonA")
-		. setLabel("ADD ALL")
-		. setPosition(width-200, 100)
-		. setSize(100, 50);
-		
-		cp5. addButton("buttonB")
-		. setLabel("CLEAR ALL")
-		. setPosition(width-200, 200)
-		. setSize(100, 50);
+		this.initButtons();
 		
 		characters = new ArrayList<Character>();
 		network = new Network(this);
@@ -55,7 +48,7 @@ public class MainApplet extends PApplet{
 		background(255);
 		textSize(36);
 		fill(100, 100, 120);
-		text("Star Wars", 550, 70);
+		text("Star Wars "+episodeNum, 550, 70);
 		network.display();
 		for(Character character :characters) {			
 			character.display(); // let the character handle its own display							
@@ -114,6 +107,28 @@ public class MainApplet extends PApplet{
 		}
 	}
 	
+	public void initButtons(){
+		cp5. addButton("buttonA")
+		. setLabel("ADD ALL")
+		. setPosition(width-200, 100)
+		. setSize(100, 50);
+		
+		cp5. addButton("buttonB")
+		. setLabel("CLEAR ALL")
+		. setPosition(width-200, 200)
+		. setSize(100, 50);
+		
+		cp5. addButton("buttonC")
+		. setLabel("PREVIOUS EPISODE")
+		. setPosition(width-200, 300)
+		. setSize(100, 50);
+		
+		cp5. addButton("buttonD")
+		. setLabel("NEXT EPISODE")
+		. setPosition(width-200, 400)
+		. setSize(100, 50);
+	}
+	
 	public void buttonA(){ 
 		for(Character character :characters)
 			character.checkInside(true);		
@@ -127,7 +142,20 @@ public class MainApplet extends PApplet{
 		}
 	}
 	
+	public void buttonC(){ 
+		if(episodeNum>1) episodeNum--;
+		file = "starwars-episode-"+episodeNum+"-interactions.json";		
+		loadData();
+	}
+	
+	public void buttonD(){ 
+		if(episodeNum<7) episodeNum++;
+		file = "starwars-episode-"+episodeNum+"-interactions.json";		
+		loadData();
+	}	
+	
 	private void loadData(){
+		characters.clear();
 		data = loadJSONObject(path+file);		
 		nodes = data.getJSONArray("nodes" );
 		links = data.getJSONArray("links" );

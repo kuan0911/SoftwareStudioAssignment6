@@ -21,7 +21,7 @@ public class Network {
 	}
 	
 	public boolean insideJudge(float x, float y){
-		if((this.parent.dist(x, y, rX, rY)<500/2+10)) {
+		if((this.parent.dist(x, y, rX, rY)<r/2+10)) {
 			return true;
 		}
 		else return false;
