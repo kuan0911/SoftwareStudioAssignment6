@@ -30,7 +30,7 @@ public class Network {
 	}
 	
 	public void display(){
-		this.parent.fill(200);
+		this.parent.fill(0);
 		this.parent.ellipse(rX, rY, r, r);
 		this.parent.fill(255);
 		this.parent.ellipse(rX, rY, r-30, r-30);

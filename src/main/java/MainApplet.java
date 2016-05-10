@@ -1,6 +1,6 @@
 package main.java;
 
-import java.awt.Color;
+//import java.awt.Color;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
@@ -20,12 +20,15 @@ public class MainApplet extends PApplet{
 	private ArrayList<Character> characters;
 	private Network network;
 	private int insideNum;
+	private Character draggedCh;
+	private boolean isDragged;
 	
 	private final static int width = 1200, height = 650;
 	
 	public void setup() {
 
 		insideNum=0;
+		isDragged=false;
 		size(width, height);
 		characters = new ArrayList<Character>();
 		network = new Network(this);
@@ -33,7 +36,7 @@ public class MainApplet extends PApplet{
 		loadData();
 		
 	}
-
+	
 	public void draw() {
 		
 		background(255);
@@ -50,13 +53,23 @@ public class MainApplet extends PApplet{
 	
 	public void mouseDragged() {
 		
-		for(Character character :characters){
-			character.drag(pmouseX, pmouseY);
+		if(isDragged==false) {
+			for(Character character :characters){
+				if(character.drag(pmouseX, pmouseY)) {
+					this.isDragged=true;
+					draggedCh = character;
+					break;
+				}
+			}
+		}
+		else {
+			draggedCh.drag(pmouseX, pmouseY);
 		}
 		
 	}
 	
 	public void mouseReleased() {
+		this.isDragged=false;
 		for(Character character :characters) {
 			if(character.getInside()==false) {
 				if(network.insideJudge(character.getX(), character.getY())) {
@@ -96,7 +109,7 @@ public class MainApplet extends PApplet{
 		links = data.getJSONArray("links" );
 		int colour;		
 		for (int i = 0; i < nodes.size(); i++) {		
-		colour = unhex(nodes.getJSONObject(i).getString("colour").substring(1,8));		
+		colour = unhex(nodes.getJSONObject(i).getString("colour").substring(1));		
 		Character ch = new Character(this,nodes.getJSONObject(i).getString("name"),100+i%4*50,100+i/4*50,colour);
 		characters.add(ch);
 		}

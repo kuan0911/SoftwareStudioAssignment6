@@ -13,6 +13,7 @@ public class Character {
 	private String name;
 	private int colour;
 	private boolean isInside;
+	//private boolean isDragged;
 
 	public Character(MainApplet parent, String name, float x, float y, int colour){
 
@@ -28,7 +29,7 @@ public class Character {
 
 	public void display(){
 		
-		this.parent.fill(colour);
+		this.parent.fill(colour, 255);
 		this.parent.noStroke(); 		
 		this.parent.ellipse(this.CurrentX, this.CurrentY, 40, 40);
 	}
@@ -43,12 +44,13 @@ public class Character {
 		
 	}
 	
-	public void drag(int mouseX, int mouseY) {
+	public boolean drag(int mouseX, int mouseY) {
 		if(MainApplet.dist( CurrentX, CurrentY, mouseX, mouseY) < 25) {
 			this.CurrentX = mouseX;
 			this.CurrentY = mouseY;
+			return true;
 		}
-		
+		return false;
 	}
 	
 	public float getX(){
