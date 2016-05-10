@@ -3,6 +3,7 @@ package main.java;
 //import java.awt.Color;
 import java.util.ArrayList;
 
+import controlP5.ControlP5;
 import processing.core.PApplet;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
@@ -22,6 +23,7 @@ public class MainApplet extends PApplet{
 	private int insideNum;
 	private Character draggedCh;
 	private boolean isDragged;
+	private ControlP5 cp5;
 	
 	private final static int width = 1200, height = 650;
 	
@@ -30,6 +32,17 @@ public class MainApplet extends PApplet{
 		insideNum=0;
 		isDragged=false;
 		size(width, height);
+		cp5 = new ControlP5(this);
+		cp5. addButton("buttonA")
+		. setLabel("ADD ALL")
+		. setPosition(width-200, 100)
+		. setSize(100, 50);
+		
+		cp5. addButton("buttonB")
+		. setLabel("CLEAR ALL")
+		. setPosition(width-200, 200)
+		. setSize(100, 50);
+		
 		characters = new ArrayList<Character>();
 		network = new Network(this);
 		smooth();
@@ -70,24 +83,23 @@ public class MainApplet extends PApplet{
 	
 	public void mouseReleased() {
 		this.isDragged=false;
+		insideNum=0;
 		for(Character character :characters) {
-			if(character.getInside()==false) {
+			
 				if(network.insideJudge(character.getX(), character.getY())) {
 					character.checkInside(true);
 					insideNum++;
 				}
 				else {
 					character.backToAnchor();
-				}
-			}
-			else {
-				if(network.insideJudge(character.getX(), character.getY())==false){
-					character.checkInside(false);
-					character.backToAnchor();
-					insideNum--;
-				}
-			}
+					character.checkInside(false);					
+				}			
 		}
+		this.putInCircle(insideNum);
+		
+	}
+	
+	public void putInCircle(int insideNum) {
 		if(insideNum>0) {
 			double arc = 360/insideNum;
 			int count=0;
@@ -102,7 +114,19 @@ public class MainApplet extends PApplet{
 		}
 	}
 	
+	public void buttonA(){ 
+		for(Character character :characters)
+			character.checkInside(true);		
+		this.putInCircle(characters.size());
+	}
 
+	public void buttonB(){ 
+		for(Character character :characters) {
+			character.checkInside(false);
+			character.backToAnchor();
+		}
+	}
+	
 	private void loadData(){
 		data = loadJSONObject(path+file);		
 		nodes = data.getJSONArray("nodes" );
@@ -118,9 +142,7 @@ public class MainApplet extends PApplet{
 			int target = links.getJSONObject(i).getInt("source");
 			int source = links.getJSONObject(i).getInt("target");
 			int value = links.getJSONObject(i).getInt("value");
-			characters.get(target).addTarget(characters.get(source),value);
-			//characters.get(links.getJSONObject(i).getInt("source")).addTarget(characters.get(links.getJSONObject(i).getInt("target")));
-			//System.out.println(links.getJSONObject(i).getInt("source")+" "+links.getJSONObject(i).getInt("target"));
+			characters.get(target).addTarget(characters.get(source),value);			
 		}
 		
 	}

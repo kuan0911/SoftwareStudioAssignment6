@@ -44,8 +44,7 @@ public class Character {
 					this.parent.strokeWeight(this.linksValue.get(characters.indexOf(ch))); 
 					this.parent.bezier( this.CurrentX, this.CurrentY,(this.CurrentX+this.network.getRX())/2, (this.CurrentY+this.network.getRY())/2, 
 						(ch.CurrentX+this.network.getRX())/2, (ch.CurrentY+this.network.getRY())/2 ,ch.CurrentX, ch.CurrentY);
-				}
-				//this.parent.line(this.CurrentX, this.CurrentY, ch.CurrentX, ch.CurrentY);
+				}				
 			}
 		}
 		this.parent.fill(colour, 255);
