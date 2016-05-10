@@ -51,7 +51,7 @@ public class MainApplet extends PApplet{
 	public void mouseDragged() {
 		
 		for(Character character :characters){
-			if(!character.getInside()) character.drag(pmouseX, pmouseY);
+			character.drag(pmouseX, pmouseY);
 		}
 		
 	}
@@ -63,17 +63,28 @@ public class MainApplet extends PApplet{
 					character.checkInside(true);
 					insideNum++;
 				}
-				else character.backToAnchor();
+				else {
+					character.backToAnchor();
+				}
+			}
+			else {
+				if(network.insideJudge(character.getX(), character.getY())==false){
+					character.checkInside(false);
+					character.backToAnchor();
+					insideNum--;
+				}
 			}
 		}
-		double arc = 360/insideNum;
-		int count=0;
-		for(Character character :characters) {
-			if(character.getInside()){
-				character.setX(network.getRX()+network.getR()*(float)Math.cos(Math.PI*arc*count/180));
-				character.setY(network.getRY()+network.getR()*(float)Math.sin(Math.PI*arc*count/180));
-				count++;
-				if(count==insideNum) break;
+		if(insideNum>0) {
+			double arc = 360/insideNum;
+			int count=0;
+			for(Character character :characters) {
+				if(character.getInside()){
+					character.setX(network.getRX()+network.getR()*(float)Math.cos(Math.PI*arc*count/180));
+					character.setY(network.getRY()+network.getR()*(float)Math.sin(Math.PI*arc*count/180));
+					count++;
+					if(count==insideNum) break;
+				}
 			}
 		}
 	}
