@@ -46,7 +46,7 @@ public class MainApplet extends PApplet{
 		network.display();
 		for(Character character :characters) {			
 			character.display(); // let the character handle its own display	
-			character.showName(mouseX, mouseY);			
+			character.inRegion(mouseX, mouseY);			
 		}
 		
 	}
@@ -55,7 +55,7 @@ public class MainApplet extends PApplet{
 		
 		if(isDragged==false) {
 			for(Character character :characters){
-				if(character.drag(pmouseX, pmouseY)) {
+				if(character.inRegion(pmouseX, pmouseY)) {
 					this.isDragged=true;
 					draggedCh = character;
 					break;

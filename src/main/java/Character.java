@@ -38,6 +38,7 @@ public class Character {
 			for(Character ch: characters){
 				if(ch.getInside()) {
 					this.parent.noFill();
+					this.parent.stroke(0); 
 					this.parent.bezier( this.CurrentX, this.CurrentY,(this.CurrentX+this.network.getRX())/2, (this.CurrentY+this.network.getRY())/2, 
 						(ch.CurrentX+this.network.getRX())/2, (ch.CurrentY+this.network.getRY())/2 ,ch.CurrentX, ch.CurrentY);
 				}
@@ -45,27 +46,25 @@ public class Character {
 			}
 		}
 		this.parent.fill(colour, 255);
-		//this.parent.noStroke(); 		
+		this.parent.noStroke(); 		
 		this.parent.ellipse(this.CurrentX, this.CurrentY, 40, 40);
 	}
 
-	public void showName(int mouseX, int mouseY) {
+	public boolean inRegion(int mouseX, int mouseY) {
 		
 		if(MainApplet.dist(this.CurrentX, this.CurrentY, mouseX, mouseY)<25) {
 			this.parent.fill(0);		
 			this.parent.textSize(10);
 			this.parent.text(name, this.CurrentX, this.CurrentY); 
-		}
-		
-	}
-	
-	public boolean drag(int mouseX, int mouseY) {
-		if(MainApplet.dist( CurrentX, CurrentY, mouseX, mouseY) < 25) {
-			this.CurrentX = mouseX;
-			this.CurrentY = mouseY;
 			return true;
 		}
-		return false;
+		else return false;
+	}
+	
+	public boolean drag(int mouseX, int mouseY) {		
+			this.CurrentX = mouseX;
+			this.CurrentY = mouseY;
+			return true;		
 	}
 	
 	public void addTarget(Character ch){
