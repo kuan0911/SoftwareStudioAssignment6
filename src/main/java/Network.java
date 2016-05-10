@@ -1,7 +1,5 @@
 package main.java;
 
-import java.util.ArrayList;
-
 import processing.core.PApplet;
 
 /**
@@ -23,7 +21,7 @@ public class Network {
 	}
 	
 	public boolean insideJudge(float x, float y){
-		if(Math.pow(x-635, 2)+Math.pow(y-380, 2)<=Math.pow(500/2, 2)) {
+		if(Math.pow(x-635, 2)+Math.pow(y-380, 2)<=Math.pow(500/2, 2)+2) {
 			return true;
 		}
 		else return false;

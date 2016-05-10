@@ -109,11 +109,11 @@ public class MainApplet extends PApplet{
 		links = data.getJSONArray("links" );
 		int colour;		
 		for (int i = 0; i < nodes.size(); i++) {		
-		colour = unhex(nodes.getJSONObject(i).getString("colour").substring(1));		
-		Character ch = new Character(this,nodes.getJSONObject(i).getString("name"),100+i%4*50,100+i/4*50,colour);
-		characters.add(ch);
+			colour = unhex(nodes.getJSONObject(i).getString("colour").substring(1));		
+			Character ch = new Character(this,nodes.getJSONObject(i).getString("name"),100+i%4*50,100+i/4*50,colour);
+			characters.add(ch);
 		}
-		/*
+		
 		for (int i = 0; i < links.size(); i++) {
 			int target = links.getJSONObject(i).getInt("source");
 			int source = links.getJSONObject(i).getInt("target");
@@ -121,7 +121,7 @@ public class MainApplet extends PApplet{
 			//characters.get(links.getJSONObject(i).getInt("source")).addTarget(characters.get(links.getJSONObject(i).getInt("target")));
 			//System.out.println(links.getJSONObject(i).getInt("source")+" "+links.getJSONObject(i).getInt("target"));
 		}
-		*/
+		
 	}
 
 }
