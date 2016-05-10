@@ -45,10 +45,10 @@ public class MainApplet extends PApplet{
 		text("Star Wars", 550, 70);
 		network.display();
 		for(Character character :characters) {			
-			character.display(); // let the character handle its own display	
-			character.inRegion(mouseX, mouseY);			
+			character.display(); // let the character handle its own display							
 		}
-		
+		for(Character character :characters) 
+			character.inRegion(mouseX, mouseY);	
 	}
 	
 	public void mouseDragged() {
