@@ -20,26 +20,26 @@ public class MainApplet extends PApplet{
 	JSONArray nodes, links;
 	private ArrayList<Character> characters;
 	private Network network;
-	private int insideNum;
-	private Character draggedCh;
-	private boolean isDragged;
-	private ControlP5 cp5;
-	private int episodeNum=1;
+	private int insideNum;	//the number of character inside the network circle
+	private Character draggedCh;	//the character that is being dragged
+	private boolean isDragged;	//if the mouse is dragging or not
+	private ControlP5 cp5;	
+	private int episodeNum=1;	//current episode
 	
 	private final static int width = 1200, height = 650;
 	
 	public void setup() {
-
+		//-----initial variable--------
 		insideNum=0;
 		isDragged=false;
 		size(width, height);
 		cp5 = new ControlP5(this);
-		this.initButtons();
+		this.initButtons();	//initial buttons
 		
 		characters = new ArrayList<Character>();
 		network = new Network(this);
 		smooth();
-		loadData();
+		loadData();	//load data
 		
 	}
 	
@@ -48,55 +48,54 @@ public class MainApplet extends PApplet{
 		background(255);
 		textSize(36);
 		fill(100, 100, 120);
-		text("Star Wars "+episodeNum, 550, 70);
-		network.display();
-		for(Character character :characters) {			
+		text("Star Wars "+episodeNum, 550, 70);	//show title
+		network.display();	//show network lines
+		for(Character character :characters) {	//show all characters
 			character.display(); // let the character handle its own display							
 		}
 		for(Character character :characters) 
-			character.inRegion(mouseX, mouseY);	
+			character.inRegion(mouseX, mouseY);	//check if the mouse is point to the character
 	}
 	
 	public void mouseDragged() {
 		
-		if(isDragged==false) {
+		if(isDragged==false) {	//if the mouse is just being pressed, decide which character to be dragged
 			for(Character character :characters){
-				if(character.inRegion(pmouseX, pmouseY)) {
-					this.isDragged=true;
-					draggedCh = character;
-					break;
+				if(character.inRegion(pmouseX, pmouseY)) {	//if mouse is in the character's region
+					this.isDragged=true;	//set character's status of dragged to true
+					draggedCh = character;	//store the selected character
+					break;	//break loop if the selected character was found
 				}
 			}
 		}
 		else {
-			draggedCh.drag(pmouseX, pmouseY);
+			draggedCh.drag(pmouseX, pmouseY);	//mouse position is equal to the character's position when mouse is pressed
 		}
 		
 	}
 	
-	public void mouseReleased() {
-		this.isDragged=false;
-		insideNum=0;
-		for(Character character :characters) {
-			
+	public void mouseReleased() {	//decide character's position when mouse is released
+		this.isDragged=false;	//set isDragged back to false
+		insideNum=0;	//reset insideNum
+		for(Character character :characters) {	//count the characters inside the network circle
 				if(network.insideJudge(character.getX(), character.getY())) {
-					character.checkInside(true);
-					insideNum++;
+					character.checkInside(true);	//set character's status to inside network circle
+					insideNum++;	//count the number
 				}
 				else {
-					character.backToAnchor();
-					character.checkInside(false);					
+					character.backToAnchor();	//back to its position if it is outside the circle
+					character.checkInside(false);	//set character's status to outside network circle
 				}			
 		}
-		this.putInCircle(insideNum);
+		this.putInCircle(insideNum);	//set the position of the characters that is inside the network circle
 		
 	}
 	
-	public void putInCircle(int insideNum) {
+	public void putInCircle(int insideNum) {	//let selected characters arrange in the network circle
 		if(insideNum>0) {
-			double arc = 360/insideNum;
+			double arc = 360/insideNum;	//calculate angle between each character
 			int count=0;
-			for(Character character :characters) {
+			for(Character character :characters) {	//set each character's position by using cosine and sine
 				if(character.getInside()){
 					character.setX(network.getRX()+network.getR()*(float)Math.cos(Math.PI*arc*count/180));
 					character.setY(network.getRY()+network.getR()*(float)Math.sin(Math.PI*arc*count/180));
@@ -107,7 +106,7 @@ public class MainApplet extends PApplet{
 		}
 	}
 	
-	public void initButtons(){
+	public void initButtons(){	//add 4 buttons
 		cp5. addButton("buttonA")
 		. setLabel("ADD ALL")
 		. setPosition(width-200, 100)
@@ -129,48 +128,48 @@ public class MainApplet extends PApplet{
 		. setSize(100, 50);
 	}
 	
-	public void buttonA(){ 
-		for(Character character :characters)
-			character.checkInside(true);		
-		this.putInCircle(characters.size());
+	public void buttonA(){ 	//add all button
+		for(Character character :characters)	//set all characters' inside network circle status to true
+			character.checkInside(true);	
+		this.putInCircle(characters.size());	//re arrange characters' position
 	}
 
 	public void buttonB(){ 
-		for(Character character :characters) {
+		for(Character character :characters) {	//set all characters' inside network circle status to false
 			character.checkInside(false);
-			character.backToAnchor();
+			character.backToAnchor();	//put back all characters
 		}
 	}
 	
-	public void buttonC(){ 
-		if(episodeNum>1) episodeNum--;
-		file = "starwars-episode-"+episodeNum+"-interactions.json";		
-		loadData();
+	public void buttonC(){ 	//previous episode button
+		if(episodeNum>1) episodeNum--;	//subtract current episode number if available
+		file = "starwars-episode-"+episodeNum+"-interactions.json";	//change load file
+		loadData();	//reload
 	}
 	
-	public void buttonD(){ 
-		if(episodeNum<7) episodeNum++;
-		file = "starwars-episode-"+episodeNum+"-interactions.json";		
-		loadData();
+	public void buttonD(){	//next episode button
+		if(episodeNum<7) episodeNum++;	//add current episode number if available
+		file = "starwars-episode-"+episodeNum+"-interactions.json";	//change load file
+		loadData();	//reload
 	}	
 	
 	private void loadData(){
-		characters.clear();
-		data = loadJSONObject(path+file);		
+		characters.clear();	//clear variable
+		data = loadJSONObject(path+file);	
 		nodes = data.getJSONArray("nodes" );
 		links = data.getJSONArray("links" );
 		int colour;		
 		for (int i = 0; i < nodes.size(); i++) {		
-			colour = unhex(nodes.getJSONObject(i).getString("colour").substring(1));		
-			Character ch = new Character(this,nodes.getJSONObject(i).getString("name"),100+i%4*50,100+i/4*50,colour);
-			characters.add(ch);
+			colour = unhex(nodes.getJSONObject(i).getString("colour").substring(1));	//read colour	
+			Character ch = new Character(this,nodes.getJSONObject(i).getString("name"),100+i%4*50,100+i/4*50,colour);	//read character's name
+			characters.add(ch);	//store character
 		}
 		
 		for (int i = 0; i < links.size(); i++) {
 			int target = links.getJSONObject(i).getInt("source");
 			int source = links.getJSONObject(i).getInt("target");
 			int value = links.getJSONObject(i).getInt("value");
-			characters.get(target).addTarget(characters.get(source),value);			
+			characters.get(target).addTarget(characters.get(source),value);	//add link to the character		
 		}
 		
 	}

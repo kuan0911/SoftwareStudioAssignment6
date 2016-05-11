@@ -15,19 +15,19 @@ public class Network {
 
 	public Network(PApplet parent){
 		this.parent = parent;
-		this.rX = 635;
-		this.rY = 380;
-		this.r = 500;
+		this.rX = 635;	//network circle center X position
+		this.rY = 380;	//network circle center Y position
+		this.r = 500;	////network circle radius
 	}
 	
-	public boolean insideJudge(float x, float y){
-		if((this.parent.dist(x, y, rX, rY)<r/2+10)) {
+	public boolean insideJudge(float x, float y){	//judge if the given position is inside the network circle
+		if((PApplet.dist(x, y, rX, rY)<r/2+10)) {
 			return true;
 		}
 		else return false;
 	}
 	
-	public void display(){	
+	public void display(){	//draw network circle
 		
 		this.parent.noFill();
 		this.parent.stroke(100);
